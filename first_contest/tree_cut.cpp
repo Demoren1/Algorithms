@@ -14,25 +14,24 @@ class SegmentTree
   public:
     SegmentTree(std::vector<T>& origin, T (*seg_foo)(T, T)): seg_foo(seg_foo)
     {
-        size_t n = 0;
+        size_t n = -1;
         size_t size = origin.size();
 
         if (size % 2 == 0)
-         --n;
+            --n;
         
         while(size > 0)
         {
             n++;
             size = size >> 1;
         }
-        --n;
+        
 
         origin.resize(2 << n);
         size_origin = origin.size();
         segment_tree.resize(2 << (n + 1));
         segment_tree[0] = 0;
 
-        int max_val = 2 << (n + 1);
         int n2 = 2 << n;
 
         for (int i = n2; i != max_val; ++i)
@@ -42,7 +41,6 @@ class SegmentTree
 
         for (int i = n2 - 1; i > 0; --i)
         {   
-            // std::cout << i;
             segment_tree[i] = seg_foo(segment_tree[i << 1], segment_tree[(i << 1) + 1]);
         }
     }
@@ -56,7 +54,6 @@ class SegmentTree
 
     T get_element_on_segment(size_t l_index, size_t r_index, size_t L, size_t R, size_t start = 1)
     {
-        // std::cout << L << ' ' << R << '\n';
         T result = segment_tree[start];
 
         if (r_index < L || l_index > R)
@@ -71,7 +68,7 @@ class SegmentTree
         {
             T x1 = get_element_on_segment(l_index, r_index, L, (L + R) / 2, start * 2);
             T x2 = get_element_on_segment(l_index, r_index, L / 2 + (R + 1) / 2, R, (start * 2) + 1);
-            // std::cout << x1 << ' ' << x2 << '\n';
+
             return seg_foo(x1, x2);
         }
 

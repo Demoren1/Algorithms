@@ -77,7 +77,6 @@ class SegmentTree
             return seg_foo(x1, x2);
         }
     }
-
 };
 
 
@@ -96,7 +95,10 @@ int foo(int first, int second)
 }
 
 int main()
-{
+{   
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
     int n = 0;
     int q = 0;
     std::cin >> n >> q;
@@ -118,7 +120,7 @@ int main()
     for (int i = 0; i != q; ++i)
     {
         std::cin >> l_index >> r_index;
-        std::cout << segment_tree.get_element_on_segment(l_index - 1, r_index - 1, 0, smeshariks.size() - 1) << '\n';
+        printf("%d \n", segment_tree.get_element_on_segment(l_index - 1, r_index - 1, 0, smeshariks.size() - 1));
     }
 
     return 0;
