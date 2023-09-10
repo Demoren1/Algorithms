@@ -33,7 +33,7 @@ class SegmentTree
         segment_tree[0] = 0;
 
         int n2 = 2 << n;
-
+        int max_val = 2 << (n + 1);
         for (int i = n2; i != max_val; ++i)
         {
             segment_tree[i] = origin[i - n2];
@@ -75,6 +75,18 @@ class SegmentTree
         return result;
     }
 
+    void update(size_t index, const T& value)
+    {   
+        size_t tree_index = index + size_origin;
+        segment_tree[tree_index] = value;
+        
+        tree_index /= 2;
+        for (; tree_index != 0; tree_index /= 2)
+        {
+            segment_tree[tree_index] = seg_foo(segment_tree[tree_index * 2], segment_tree[tree_index * 2 + 1]);
+        }
+    }
+
 };
 
 
@@ -88,8 +100,8 @@ int foo(int first, int second)
     else if (second == POISON)
         return first;
 
-    return std::min(first, second);
-    // return first + second;
+    // return std::min(first, second);
+    return first + second;
 }
 
 int main()
@@ -97,9 +109,10 @@ int main()
     std::vector<int> tmp_vector = {1, 2, 2, 3, 1, 1, 4, 2};
     SegmentTree<int> segment_tree(tmp_vector, foo);
 
+    segment_tree.update(0, 5);
     // segment_tree.show_tree();
 
-    std::cout << segment_tree.get_element_on_segment(5, 7, 0, tmp_vector.size() - 1) << '\n'; 
+    std::cout << segment_tree.get_element_on_segment(0, 7, 0, tmp_vector.size() - 1) << '\n'; 
     return 0;
 }
 
