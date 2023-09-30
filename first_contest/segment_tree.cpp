@@ -223,12 +223,10 @@ class SegmentTree
 
     void push_until_end(size_t node_index, carried_update_on_node<T>& update_on_node)
     {
-        T result = 0;
-
         if (2 * node_index + 1 < 2 * size_origin)
         {
-            update_on_node(segment_tree[2 * node_index].value, segment_tree[node_index].promise);
-            update_on_node(segment_tree[2 * node_index + 1].value, segment_tree[node_index].promise);
+            update_on_node(segment_tree[2 * node_index].promise, segment_tree[node_index].promise);
+            update_on_node(segment_tree[2 * node_index + 1].promise, segment_tree[node_index].promise);
 
             segment_tree[node_index].promise = 0;
 
@@ -239,6 +237,7 @@ class SegmentTree
         }
 
         update_on_node(segment_tree[node_index].value, segment_tree[node_index].promise);
+        segment_tree[node_index].promise = 0;
     }
 
 };
@@ -275,14 +274,14 @@ int main()
     // segment_tree.update(0, 5);
     // segment_tree.update(6, 3);
 
-    int sum = segment_tree.get_element_on_segment(0, 2, our_update);
+    int sum = segment_tree.get_element_on_segment(0, 3, our_update);
     // printf("sum = %d\n", sum);
     // segment_tree.show_tree();
     
 
-    segment_tree.update_on_segment(0, 2, our_update);
+    segment_tree.update_on_segment(0, 3, our_update);
     segment_tree.show_tree();
-    sum = segment_tree.get_element_on_segment(0, 2, our_update);
+    sum = segment_tree.get_element_on_segment(0, 3, our_update);
     printf("sum = %d\n", sum);
 
     segment_tree.show_tree();

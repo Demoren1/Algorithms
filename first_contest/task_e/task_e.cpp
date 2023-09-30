@@ -164,7 +164,6 @@ int main()
 
     SegmentTree<long long> segment_tree(smeshariks, foo);
 
-
     std::cin >> q;
 
     char managing_char = 'a';
