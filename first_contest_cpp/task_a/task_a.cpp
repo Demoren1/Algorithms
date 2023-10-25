@@ -6,9 +6,10 @@
 #define DBG printf("%s:%d -- %s\n", __FILE__, __LINE__, __FUNCTION__);
 
 void Solution();
-int FindDist(const std::vector<int>& arr, int len);
-int FindNLines(const std::vector<int>& arr, int jump_dist, int len);
+int FindDist(const int* arr, int len);
+int FindNLines(const int* arr, int jump_dist, int len);
 void ShowAnswer(int vert_dist, int hor_dist, int n_hor_lines, int n_vert_lines, int n_rows, int n_columns);
+void Dtor2DArray(int** arr, int len);
 
 int main() {
   Solution();
@@ -28,20 +29,15 @@ void Solution() {
 
   std::cin >> n_rows >> n_columns;
 
-  std::vector<std::vector<int>> rows(n_rows, std::vector<int>(n_columns));
-  std::vector<std::vector<int>> columns(n_columns, std::vector<int>(n_rows));
+  auto rows = new int*[n_rows];
+  for (int i = 0; i < n_rows; ++i) {
+    rows[i] = new int[n_columns];
+  }
 
-  // int** rows = (int**) calloc(n_rows, sizeof(int*));
-  // for (int i = 0; i < n_rows; ++i)
-  // {
-  //     rows[i] = (int*) calloc(n_columns, sizeof(int));
-  // }
-
-  // int** columns = (int**) calloc(n_columns, sizeof(int*));
-  // for (int i = 0; i < n_columns; ++i)
-  // {
-  //     columns[i] = (int*) calloc(n_rows, sizeof(int));
-  // }
+  auto columns = new int*[n_columns];
+  for (int i = 0; i < n_columns; ++i) {
+    columns[i] = new int[n_rows];
+  }
 
   char tmp_val = 0;
   for (int i = 0; i < n_rows; ++i) {
@@ -74,9 +70,11 @@ void Solution() {
   }
 
   ShowAnswer(vert_dist, hor_dist, n_hor_lines, n_vert_lines, n_rows, n_columns);
+  Dtor2DArray(rows, n_rows);
+  Dtor2DArray(columns, n_columns);
 }
 
-int FindDist(const std::vector<int>& arr, int len) {
+int FindDist(const int* arr, int len) {
   int counter = 0;
   int result = 0;
 
@@ -91,7 +89,7 @@ int FindDist(const std::vector<int>& arr, int len) {
   return result;
 }
 
-int FindNLines(const std::vector<int>& arr, int jump_dist, int len) {
+int FindNLines(const int* arr, int jump_dist, int len) {
   int n_lines = 0;
   int counter = 0;
 
@@ -139,4 +137,12 @@ void ShowAnswer(int vert_dist, int hor_dist, int n_hor_lines, int n_vert_lines, 
   } else if (n_rows == 1 || n_columns == 1) {
     std::cout << "?";
   }
+}
+
+void Dtor2DArray(int** arr, int len) {
+  for (int i = 0; i < len; ++i) {
+    delete[] arr[i];
+  }
+
+  delete[] arr;
 }
