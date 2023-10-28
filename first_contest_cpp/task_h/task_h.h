@@ -1,5 +1,5 @@
-#ifndef H_GUARD
-#define H_GUARD
+#ifndef TASK_H_H
+#define TASK_H_H
 #include <iostream>
 
 template <typename Iterator>

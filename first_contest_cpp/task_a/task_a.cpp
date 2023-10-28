@@ -1,9 +1,4 @@
 #include <iostream>
-#include <cstdlib>
-#include <vector>
-#include <cstdio>
-
-#define DBG printf("%s:%d -- %s\n", __FILE__, __LINE__, __FUNCTION__);
 
 void Solution();
 int FindDist(const int* arr, int len);

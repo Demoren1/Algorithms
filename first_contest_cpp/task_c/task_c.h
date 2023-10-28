@@ -1,5 +1,5 @@
-#ifndef SORT_GUARD
-#define SORT_GUARD
+#ifndef TASK_C_H
+#define TASK_C_H
 
 template <typename Iter>
 void Sort(Iter* begin, Iter* end) {

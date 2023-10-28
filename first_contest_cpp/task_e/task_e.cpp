@@ -1,68 +1,87 @@
 #include <iostream>
 #include <cstring>
 
+/*
+1) Комментарии удалены
+2) Члены класса используются явно при решении. Метод FindResult идейно не является членом класса.
+   Можно написать функцию которая явно бы возвращала указатель на массив, и _n_, но это мало бы отличалось от нынешнего
+явного использования элементов класса. Поэтому не вижу смысла выносить их в секцию private 3) Использую правило трех,
+так как правило пяти избыточно в данной задаче.
+*/
+
 class Table {
  public:
-  int **_table;
-  int _n;
+  int **_table_;
+  int _n_;
 
   explicit Table(int n) {
-    _n = n;
-    _table = new int *[n];
+    _n_ = n;
+    _table_ = new int *[n];
     for (int i = 0; i < n; ++i) {
-      _table[i] = new int[n];
-      std::memset(_table[i], 0, n * sizeof(int));
+      _table_[i] = new int[n];
+      std::memset(_table_[i], 0, n * sizeof(int));
+    }
+  }
+
+  Table(const Table &table) {
+    _n_ = table._n_;
+    _table_ = new int *[_n_];
+    for (int i = 0; i < _n_; ++i) {
+      _table_[i] = new int[_n_];
+      for (int j = 0; j < _n_; ++j) {
+        _table_[i][j] = table._table_[i][j];
+      }
     }
   }
 
   void ClearTable() {
-    for (int i = 0; i < _n; ++i) {
-      std::memset(_table[i], 0, _n * sizeof(int));
+    for (int i = 0; i < _n_; ++i) {
+      std::memset(_table_[i], 0, _n_ * sizeof(int));
     }
   }
 
   void ClearTableOnPoint() {
-    for (int i = 0; i < _n; ++i) {
-      std::memset(_table[i], 0, _n * sizeof(int));
+    for (int i = 0; i < _n_; ++i) {
+      std::memset(_table_[i], 0, _n_ * sizeof(int));
     }
   }
 
   void PointCells(int i, int j, int value) {
-    for (int k = i + 1; k < _n; ++k) {
-      _table[k][j] += value;
+    for (int k = i + 1; k < _n_; ++k) {
+      _table_[k][j] += value;
     }
 
     for (int k = i - 1; k >= 0; --k) {
-      _table[k][j] += value;
+      _table_[k][j] += value;
     }
 
-    for (int m = j + 1; m < _n; ++m) {
-      _table[i][m] += value;
+    for (int m = j + 1; m < _n_; ++m) {
+      _table_[i][m] += value;
     }
 
-    for (int m = j + 1, k = i + 1; m < _n && k < _n; ++m, ++k) {
-      _table[k][m] += value;
+    for (int m = j + 1, k = i + 1; m < _n_ && k < _n_; ++m, ++k) {
+      _table_[k][m] += value;
     }
 
-    for (int m = j + 1, k = i - 1; m < _n && k >= 0; ++m, --k) {
-      _table[k][m] += value;
+    for (int m = j + 1, k = i - 1; m < _n_ && k >= 0; ++m, --k) {
+      _table_[k][m] += value;
     }
   }
 
   void ShowTable() {
-    for (int i = 0; i < _n; ++i) {
-      for (int j = 0; j < _n; ++j) {
-        std::cout << _table[i][j] << ' ';
+    for (int i = 0; i < _n_; ++i) {
+      for (int j = 0; j < _n_; ++j) {
+        std::cout << _table_[i][j] << ' ';
       }
       std::cout << '\n';
     }
   }
 
   ~Table() {
-    for (int i = 0; i < _n; ++i) {
-      delete[] _table[i];
+    for (int i = 0; i < _n_; ++i) {
+      delete[] _table_[i];
     }
-    delete[] _table;
+    delete[] _table_;
   }
 };
 
@@ -85,12 +104,6 @@ int Solution() {
 
   FindResult(table, 0, result);
 
-  // table.PointCells(2, 1, 1);
-  // table.ShowTable();
-  // table.PointCells(0, 1, -1);
-  // table.ShowTable();
-
-  // std::cout << "result = " << result << '\n';
   std::cout << result << '\n';
 
   return 0;
@@ -99,37 +112,28 @@ int Solution() {
 int FindResult(Table &table, int row, int &result) {
   bool queen_set = false;
 
-  if (row > table._n) {
+  if (row > table._n_) {
     return 0;
   }
 
-  for (int i = 0; i < table._n; ++i) {
-    if (row == 0) {
-      // std::` << "New row " << i << '\n';
-    }
-
-    // std::cout << '\n';
-    // table.ShowTable();
-    // std::cout << '\n';
-
-    if (table._table[i][row] == 0) {
-      table._table[i][row] += 1;
+  for (int i = 0; i < table._n_; ++i) {
+    if (table._table_[i][row] == 0) {
+      table._table_[i][row] += 1;
       table.PointCells(i, row, 1);
       queen_set = true;
     }
     if (queen_set) {
-      if (row == table._n - 1) {
+      if (row == table._n_ - 1) {
         ++result;
-        // std::cout << "GET ONE\n";
         table.PointCells(i, row, -1);
-        --(table._table[i][row]);
+        --(table._table_[i][row]);
         return 0;
       }
       FindResult(table, row + 1, result);
 
       queen_set = false;
       table.PointCells(i, row, -1);
-      --(table._table[i][row]);
+      --(table._table_[i][row]);
     }
   }
 

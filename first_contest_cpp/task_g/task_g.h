@@ -1,5 +1,5 @@
-#ifndef MERGE_GUARD
-#define MERGE_GUARD
+#ifndef TASK_G_H
+#define TASK_G_H
 
 template <typename InputIterator1, typename InputIterator2, typename OutputIterator>
 void Merge(InputIterator1 const* first_begin, InputIterator1 const* first_end, InputIterator2 const* second_begin,
