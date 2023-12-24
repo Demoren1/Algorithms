@@ -2,18 +2,13 @@
 #include <cstring>
 
 int Solution();
-
 int** Ctor2DArray(int n);
-
 void Dtor2DArray(int** arr, int n);
-
 void FormAnswer(int** arr, int* ans, int n);
-
 void ShowAns(int* ans, int n);
-
 bool CheckSol(int** arr, int* ans, int n);
 
-// #define DBG printf("%s:%d -- %s\n", __FILE__, __LINE__, __FUNCTION__);
+#define MAX_NUM 9999
 
 int main() {
 
@@ -74,7 +69,7 @@ void FormAnswer(int** arr, int* ans, int n) {
 
   int tmp_num = 0;
   for (int i = 0; i < n; ++i) {
-    tmp_num = 9999;
+    tmp_num = MAX_NUM;
     for (int j = 0; j < n; ++j) {
       if (i == j) {
         continue;

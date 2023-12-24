@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 
 size_t Strlen(const char* str) {
   size_t len = 0;
